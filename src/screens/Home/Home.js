@@ -11,6 +11,7 @@ import ViewSlider from 'react-native-view-slider';
 import axios from 'axios';
 import { apiUrl ,apiAsset} from "@commons/inFormTypes";
 import AsyncStorage from  '@react-native-async-storage/async-storage';
+import {getNames,namesUpdate} from '@services/homeService';
 
 
 // create a component
@@ -36,18 +37,28 @@ export const truncate = (str, len) => {
 
 
   useEffect(() => {
+    var ss=getNames()
+if(ss.length==0)
+{
 
-    mutLogin();
+  mutLogin();
+
+}
+else{
+
+  setData(getNames())
+}
 
 
 }, []);
   const  mutLogin=async()=> {
+
     axios.get("https://jsonplaceholder.typicode.com/users")
     .then(function (response) {
   
       console.log(123456);
       console.log(response.data[0].name);
-
+      namesUpdate(response.data)
         setData(response.data)
         
     })
